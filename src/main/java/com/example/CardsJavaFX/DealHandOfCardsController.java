@@ -1,9 +1,12 @@
 package com.example.CardsJavaFX;
 
 import javafx.animation.TranslateTransition;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -28,6 +31,7 @@ public class DealHandOfCardsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         deck = new DeckOfCards();
+        deck.shuffle();
     }
 
     @FXML
@@ -37,6 +41,12 @@ public class DealHandOfCardsController implements Initializable {
         // Deal out the top 5 cards into the hand
         for (int i = 1; i < 5; i++) {
             Card card = deck.dealTopCard();
+
+            if (card == null) {
+                deckImageView.setVisible(false);
+                break;
+            }
+
             hand.add(card);
 
             // Create new ImageView object and add to the anchor pane
@@ -53,7 +63,7 @@ public class DealHandOfCardsController implements Initializable {
             imageView.setLayoutY(deckPositionY);
 
             // Add the image to the newly created Card
-            imageView.setImage(card.getCardImage());
+            imageView.setImage(new Image(getClass().getResource("images/redCardBack.png").toExternalForm()));
 
             // Add the new Card image to the anchor pane
             anchorPane.getChildren().add(imageView);
@@ -62,8 +72,16 @@ public class DealHandOfCardsController implements Initializable {
             TranslateTransition transition = new TranslateTransition();
             transition.setNode(imageView);
             transition.setDuration(Duration.millis(2000));
-            transition.setByX(300 + (i*50));
+            transition.setByX(300 + (i * 50));
             transition.play();
+
+            // Add an event handler for a mouse click on the imageview holding the card
+            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    imageView.setImage(card.getCardImage());
+                }
+            });
         }
     }
 }

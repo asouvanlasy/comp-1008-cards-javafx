@@ -1,3 +1,10 @@
-.root{
+.root {
     -fx-font-size: 20px;
+}
+
+.button {
+    -fx-text-fill: rgb(104,83,65);
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-width: 5;
 }
