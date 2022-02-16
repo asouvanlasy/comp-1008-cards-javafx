@@ -1,10 +1,12 @@
 package com.example.CardsJavaFX;
 
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class DealHandOfCardsController implements Initializable {
     private ImageView deckImageView;
 
     @FXML
-    private VBox deckVbox;
+    private VBox deckVBox;
 
     private DeckOfCards deck;
 
@@ -39,12 +41,12 @@ public class DealHandOfCardsController implements Initializable {
 
             // Create new ImageView object and add to the anchor pane
             ImageView imageView = new ImageView();
-            deckImageView.setFitWidth(190);
-            deckImageView.setFitHeight(287);
+            imageView.setFitWidth(190);
+            imageView.setFitHeight(287);
 
             // Get coordinates of top-left corner of the card
-            double deckPositionX = deckImageView.getLayoutX();
-            double deckPositionY = deckImageView.getLayoutY();
+            double deckPositionX = deckVBox.getLayoutX();
+            double deckPositionY = deckVBox.getLayoutY();
 
             // Configure the new Card object to be positioned on top of the deck of cards
             imageView.setLayoutX(deckPositionX);
@@ -52,6 +54,16 @@ public class DealHandOfCardsController implements Initializable {
 
             // Add the image to the newly created Card
             imageView.setImage(card.getCardImage());
+
+            // Add the new Card image to the anchor pane
+            anchorPane.getChildren().add(imageView);
+
+            // Animate the card to slide across the table
+            TranslateTransition transition = new TranslateTransition();
+            transition.setNode(imageView);
+            transition.setDuration(Duration.millis(2000));
+            transition.setByX(300 + (i*50));
+            transition.play();
         }
     }
 }
